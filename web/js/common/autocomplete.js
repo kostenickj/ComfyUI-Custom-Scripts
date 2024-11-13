@@ -346,6 +346,7 @@ class TextAreaCaretHelper {
  * 	hint?: string,
  *  showValue?: boolean,
  *  caretOffset?: number
+ *  activation_text?: string
  * }} AutoCompleteEntry
  */
 export class TextAreaAutoComplete {
@@ -620,6 +621,10 @@ export class TextAreaAutoComplete {
 					}
 					value = this.#escapeParentheses(value);
 					const afterCursor = this.helper.getAfterCursor();
+					if(wordInfo.activation_text?.trim())
+					{
+						value += wordInfo.activation_text;
+					}
 					const shouldAddSeparator = !afterCursor.trim().startsWith(this.separator.trim());
 					this.helper.insertAtCursor(
 					  value + (shouldAddSeparator ? this.separator : ''),

@@ -547,9 +547,9 @@ app.registerExtension({
 
 		async function addLoras() {
 			let loras;
-			try {
-				loras = LiteGraph.registered_node_types["LoraLoader"]?.nodeData.input.required.lora_name[0];
-			} catch (error) {}
+			// try {
+			// 	loras = LiteGraph.registered_node_types["LoraLoader"]?.nodeData.input.required.lora_name[0];
+			// } catch (error) {}
 
 			if (!loras?.length) {
 				loras = await api.fetchApi("/pysssss/loras", { cache: "no-store" }).then((res) => res.json());
@@ -559,17 +559,17 @@ app.registerExtension({
 			words["lora:"] = { text: "lora:" };
 
 			for (const lora of loras) {
-				const v = `<lora:${lora}:1.0>`;
+				let v = `<lora:${lora.lora_name}:${lora.preferred_weight}>`;
 				words[v] = {
 					text: v,
 					info: () => new LoraInfoDialog(lora).show("loras", lora),
 					use_replacer: false,
+					activation_text:  lora.activation_text
 				};
 			}
 
 			TextAreaAutoComplete.updateWords("pysssss.loras", words);
 		}
-
 		// store global words with/without loras
 		Promise.all([addEmbeddings(), addCustomWords()])
 			.then(() => {
