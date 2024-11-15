@@ -535,8 +535,9 @@ app.registerExtension({
 
 			for (const emb of embeddings) {
 				const v = `embedding:${emb}`;
+				const split = emb.includes('\\') ? emb.split('\\') : emb.split('/');
 				words[v] = {
-					text: v,
+					text:  `embedding:${split[split.length-1]}`,
 					info: () => new EmbeddingInfoDialog(emb).show("embeddings", emb),
 					use_replacer: false,
 				};
