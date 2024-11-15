@@ -28,7 +28,7 @@ class MetadataDialog extends ComfyDialog {
 export class ModelInfoDialog extends ComfyDialog {
 	constructor(name, node) {
 		super();
-		this.name = name;
+		this.name = typeof name === 'string' ? name : name.lora_name;
 		this.node = node;
 		this.element.classList.add("pysssss-model-info");
 	}
@@ -48,7 +48,9 @@ export class ModelInfoDialog extends ComfyDialog {
 	async show(type, value) {
 		this.type = type;
 
-		const req = api.fetchApi("/pysssss/metadata/" + encodeURIComponent(`${type}/${value}`));
+		const val = type === 'loras' ? value.lora_name : value;
+
+		const req = api.fetchApi("/pysssss/metadata/" + encodeURIComponent(`${type}/${val}`));
 		this.info = $el("div", { style: { flex: "auto" } });
 		this.img = $el("img", { style: { display: "none" } });
 		this.imgWrapper = $el("div.pysssss-preview", [this.img]);
